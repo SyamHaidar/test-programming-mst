@@ -1,0 +1,53 @@
+[
+  {
+    "kode": "240801-0001",
+    "tgl": "01-08-2024",
+    "nama": "Cust A",
+    "jumlah_barang": "5",
+    "subtotal": "250.000",
+    "diskon": "5000",
+    "ongkir": "15.000",
+    "total": "245.000"
+  },
+  {
+    "kode": "240801-0002",
+    "tgl": "01-08-2024",
+    "nama": "Cust A",
+    "jumlah_barang": "5",
+    "subtotal": "250.000",
+    "diskon": "5000",
+    "ongkir": "15.000",
+    "total": "245.000"
+  },
+  {
+    "kode": "240801-0003",
+    "tgl": "01-08-2024",
+    "nama": "Cust A",
+    "jumlah_barang": "5",
+    "subtotal": "250.000",
+    "diskon": "5000",
+    "ongkir": "15.000",
+    "total": "245.000"
+  },
+  {
+    "kode": "240801-0004",
+    "tgl": "01-08-2024",
+    "nama": "Cust A",
+    "jumlah_barang": "5",
+    "subtotal": "250.000",
+    "diskon": "5000",
+    "ongkir": "15.000",
+    "total": "245.000"
+  },
+  {
+    "kode": "240801-0005",
+    "tgl": "01-08-2024",
+    "nama": "Cust A",
+    "jumlah_barang": "5",
+    "subtotal": "250.000",
+    "diskon": "5000",
+    "ongkir": "15.000",
+    "total": "245.000"
+  }
+]
+  
