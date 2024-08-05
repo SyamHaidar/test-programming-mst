@@ -2,7 +2,11 @@ import { ChangeEvent, createContext, ReactNode, useContext, useState } from 'rea
 import { useNavigate } from 'react-router-dom'
 import { TransactionAPI } from '../services'
 import { CustomerListProps, TransactionRequestProps } from '../types'
-import { TransactionListResponseProps, TransactionRequestProductsProps } from '../types/TransactionProps'
+import {
+  TransactionListResponseProps,
+  TransactionRequestMessageProps,
+  TransactionRequestProductsProps,
+} from '../types/TransactionProps'
 import { GenerateTransactionCode } from '../utils'
 
 // ----------------------------------------------------------------------
@@ -10,14 +14,14 @@ import { GenerateTransactionCode } from '../utils'
 interface TransactionContextProps {
   transactionList: TransactionListResponseProps[]
   transactionForm: TransactionRequestProps
-  errorMessage: TransactionRequestProps
+  errorMessage: TransactionRequestMessageProps
   getAllTransaction: () => Promise<void>
   createTransaction: (transaction: TransactionRequestProps) => Promise<void>
   handleTransactionForm: (e: ChangeEvent<HTMLInputElement>) => void
   handleCustomerSelect: (customer: CustomerListProps) => void
-  handleProduct: (product: TransactionRequestProductsProps) => void
-  deleteProduct: (index: number) => void
+  handleAddProduct: (product: TransactionRequestProductsProps) => void
   handleEditProduct: (index: number, product: TransactionRequestProductsProps) => void
+  handleDeleteProduct: (index: number) => void
 }
 
 export const TransactionContext = createContext<TransactionContextProps | null>(null)
@@ -39,8 +43,8 @@ export default function TransactionProvider({ children }: TransactionProviderPro
     custName: '',
     custPhone: '',
     products: [],
-    discount: '0',
-    shippingPrice: '0',
+    discount: '',
+    shippingPrice: '',
     subtotal: '',
     totalPayment: '',
   })
@@ -48,23 +52,16 @@ export default function TransactionProvider({ children }: TransactionProviderPro
     transactionCode: '',
     transactionDate: '',
     custId: '',
-    custCode: '',
-    custName: '',
-    custPhone: '',
-    products: [],
     discount: '',
     shippingPrice: '',
-    subtotal: '',
-    totalPayment: '',
   })
 
-  console.log(transactionForm.subtotal)
-
-  // handle
+  // handle transaction
   const handleTransactionForm = (e: ChangeEvent<HTMLInputElement>) => {
     setTransactionForm((prevState) => ({ ...prevState, [e.target.name]: e.target.value }))
   }
 
+  // handle customer
   const handleCustomerSelect = (customer: CustomerListProps) => {
     setTransactionForm((prevState) => ({
       ...prevState,
@@ -75,7 +72,8 @@ export default function TransactionProvider({ children }: TransactionProviderPro
     }))
   }
 
-  const handleProduct = (product: TransactionRequestProductsProps) => {
+  // handle product
+  const handleAddProduct = (product: TransactionRequestProductsProps) => {
     setTransactionForm((prevState) => ({
       ...prevState,
       products: [...prevState.products, product],
@@ -90,7 +88,7 @@ export default function TransactionProvider({ children }: TransactionProviderPro
     }))
   }
 
-  const deleteProduct = (index: number) => {
+  const handleDeleteProduct = (index: number) => {
     const newProducts = transactionForm.products.filter((_, i) => i !== index)
     setTransactionForm({
       ...transactionForm,
@@ -109,18 +107,13 @@ export default function TransactionProvider({ children }: TransactionProviderPro
   }
 
   const createTransaction = async () => {
+    // validate
     const errors = {
       transactionCode: '',
       transactionDate: '',
       custId: '',
-      custCode: '',
-      custName: '',
-      custPhone: '',
-      products: [],
       discount: '',
       shippingPrice: '',
-      subtotal: '',
-      totalPayment: '',
     }
     if (!transactionForm.transactionCode) {
       errors.transactionCode = '* No transaksi tidak boleh kosong.'
@@ -131,7 +124,13 @@ export default function TransactionProvider({ children }: TransactionProviderPro
     if (!transactionForm.custId) {
       errors.custId = '* Customer tidak boleh kosong.'
     }
-    if (errors.transactionCode || errors.transactionDate || errors.custId) {
+    if (!/^\d+$/.test(transactionForm.discount.toString())) {
+      errors.discount = '* Harga diskon tidak valid.'
+    }
+    if (!/^\d+$/.test(transactionForm.shippingPrice.toLocaleString())) {
+      errors.shippingPrice = '* Harga ongkir tidak valid.'
+    }
+    if (errors.transactionCode || errors.transactionDate || errors.custId || errors.discount || errors.shippingPrice) {
       setErrorMessage(errors)
       return
     }
@@ -154,8 +153,8 @@ export default function TransactionProvider({ children }: TransactionProviderPro
         createTransaction,
         handleTransactionForm,
         handleCustomerSelect,
-        handleProduct,
-        deleteProduct,
+        handleAddProduct,
+        handleDeleteProduct,
         handleEditProduct,
       }}
     >

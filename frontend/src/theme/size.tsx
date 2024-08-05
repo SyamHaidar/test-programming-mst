@@ -1,5 +1,5 @@
 const FONT = {
-  default: '16px',
+  default: '14px',
 }
 
 const BUTTON = {

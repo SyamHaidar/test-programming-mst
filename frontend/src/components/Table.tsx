@@ -1,8 +1,8 @@
-// ----------------------------------------------------------------------
-
 import { ReactNode } from 'react'
 import styled from 'styled-components'
 import { Card, Stack, theme, Typography } from '../theme'
+
+// ----------------------------------------------------------------------
 
 const CustomTable = styled.table`
   border-collapse: collapse;
@@ -54,7 +54,7 @@ export default function Table({ children, head, data }: TableProps) {
           {!data ? (
             <tr>
               <td colSpan={head.length}>
-                <Stack>
+                <Stack justifyContent="center" sx={{ padding: '16px' }}>
                   <Typography>Data belum tersedia</Typography>
                 </Stack>
               </td>

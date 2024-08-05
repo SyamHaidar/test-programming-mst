@@ -26,8 +26,8 @@ export default function ModalOverlay({ children, isModalShow }: ModalOverlayProp
         <Box
           onClick={isModalShow}
           sx={{
-            position: 'fixed',
             backgroundColor: theme.palette.background.overlay,
+            position: 'fixed',
             inset: 0,
           }}
         />

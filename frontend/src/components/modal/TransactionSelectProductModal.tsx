@@ -14,6 +14,7 @@ export default function TransactionSelectProductModal({
   isOpen,
   handleProductSelect,
 }: TransactionSelectProductModalProps) {
+  // context
   const { getAllProduct, productList } = useProduct()
 
   useEffect(() => {
@@ -31,7 +32,7 @@ export default function TransactionSelectProductModal({
           {productList &&
             productList.map((data, index) => (
               <Stack
-                key={data.id}
+                key={index}
                 direction="column"
                 spacing="2"
                 onClick={() => {

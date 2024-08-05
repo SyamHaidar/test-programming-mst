@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useTransaction } from '../../contexts'
-import { Button, Modal, Stack, TextField, Typography } from '../../theme'
+import { Button, Modal, Stack, TextField, theme, Typography } from '../../theme'
 import { ProductListProps } from '../../types'
 import ModalOverlay from './ModalOverlay'
 import TransactionSelectProductModal from './TransactionSelectProductModal'
@@ -18,28 +18,61 @@ export default function TransactionProductModalAdd({
   isEditing = false,
   editingProductIndex,
 }: TransactionProductModalAddProps) {
-  const { handleProduct, handleEditProduct } = useTransaction()
+  //context
+  const { handleAddProduct, handleEditProduct } = useTransaction()
+  // state
   const [productForm, setProductForm] = useState({
     id: '',
     code: '',
     name: '',
-    quantity: 1,
-    priceBeforeDiscount: 0,
-    discountPercent: 0,
-    discountValue: 0,
-    priceAfterDiscount: 0,
-    totalPrice: 0,
+    quantity: '',
+    priceBeforeDiscount: '',
+    discountPercent: '',
+    discountValue: '',
+    priceAfterDiscount: '',
+    totalPrice: '',
+  })
+  const [errorMessage, setErrorMessage] = useState({
+    code: '',
+    quantity: '',
+    priceBeforeDiscount: '',
+    discountPercent: '',
   })
 
   // add product modal toggle
   const [openProductModal, setOpenProductModal] = useState(false)
   const isOpenProductModal = () => setOpenProductModal(!openProductModal)
 
+  // handle
   const handleProductFormChange = (e: ChangeEvent<HTMLInputElement>) => {
     setProductForm({ ...productForm, [e.target.name]: e.target.value })
   }
 
   const handleProductFormSave = () => {
+    // validate
+    const errors = {
+      code: '',
+      quantity: '',
+      priceBeforeDiscount: '',
+      discountPercent: '',
+    }
+    if (!productForm.code) {
+      errors.code = '* Kode produk tidak boleh kosong.'
+    }
+    if (!productForm.quantity) {
+      errors.quantity = '* Jumlah barang tidak valid.'
+    }
+    if (!productForm.priceBeforeDiscount && !/^\d+$/.test(productForm.priceBeforeDiscount.toString())) {
+      errors.priceBeforeDiscount = '* Harga bandrol tidak valid.'
+    }
+    if (!productForm.discountPercent && !/^\d+$/.test(productForm.discountPercent.toString())) {
+      errors.discountPercent = '* Harga diskon tidak valid.'
+    }
+    if (errors.code || errors.quantity || errors.priceBeforeDiscount || errors.discountPercent) {
+      setErrorMessage(errors)
+      return
+    }
+
     const product = {
       id: productForm.id,
       code: productForm.code,
@@ -54,8 +87,9 @@ export default function TransactionProductModalAdd({
     if (isEditing) {
       handleEditProduct(Number(editingProductIndex), product)
     } else {
-      handleProduct(product)
+      handleAddProduct(product)
     }
+
     handleClose()
   }
 
@@ -64,12 +98,12 @@ export default function TransactionProductModalAdd({
       id: '',
       code: '',
       name: '',
-      quantity: 1,
-      priceBeforeDiscount: 0,
-      discountPercent: 0,
-      discountValue: 0,
-      priceAfterDiscount: 0,
-      totalPrice: 0,
+      quantity: '',
+      priceBeforeDiscount: '',
+      discountPercent: '',
+      discountValue: '',
+      priceAfterDiscount: '',
+      totalPrice: '',
     })
     isOpen(false)
   }
@@ -81,19 +115,20 @@ export default function TransactionProductModalAdd({
       code: product.code,
       name: product.name,
     }))
-    isOpenProductModal() // Close the modal after selection
+    isOpenProductModal()
   }
 
+  // other
   useEffect(() => {
-    const priceBeforeDiscount = productForm.priceBeforeDiscount || 0
-    const discountPercent = productForm.discountPercent || 0
-    const discountValue = (priceBeforeDiscount * discountPercent) / 100
-    const priceAfterDiscount = priceBeforeDiscount - discountValue
+    const priceBeforeDiscount = productForm.priceBeforeDiscount || '0'
+    const discountPercent = productForm.discountPercent || '0'
+    const discountValue = (Number(priceBeforeDiscount) * Number(discountPercent)) / 100
+    const priceAfterDiscount = Number(priceBeforeDiscount) - discountValue
     setProductForm((prevState) => ({
       ...prevState,
-      discountValue: discountValue,
-      priceAfterDiscount: priceAfterDiscount,
-      totalPrice: priceAfterDiscount * (productForm.quantity || 1),
+      discountValue: discountValue.toString(),
+      priceAfterDiscount: priceAfterDiscount.toString(),
+      totalPrice: (priceAfterDiscount * (Number(productForm.quantity) || 1)).toString(),
     }))
   }, [productForm.priceBeforeDiscount, productForm.discountPercent, productForm.quantity])
 
@@ -104,16 +139,23 @@ export default function TransactionProductModalAdd({
           <Stack alignItems="center" sx={{ height: '56px', padding: '0 16px' }}>
             <Typography as="h2" text="Tambah produk" size="18" weight="700" color="primary" />
           </Stack>
-          <Stack direction="column" spacing="16" sx={{ padding: '16px' }}>
-            <TextField
-              onClick={isOpenProductModal}
-              label="Kode Produk"
-              type="text"
-              name="id"
-              value={productForm.code}
-              onChange={handleProductFormChange}
-              readOnly
-            />
+          <Stack direction="column" spacing="20" sx={{ padding: '16px' }}>
+            <Stack direction="column" spacing="2" sx={{ width: '100%' }}>
+              <TextField
+                onClick={isOpenProductModal}
+                label="Kode Produk"
+                type="text"
+                name="id"
+                value={productForm.code}
+                onChange={handleProductFormChange}
+                readOnly
+              />
+              {errorMessage.code && (
+                <Typography size="12" hexColor={theme.palette.color.danger.default}>
+                  {errorMessage.code}
+                </Typography>
+              )}
+            </Stack>
             {productForm.code && (
               <TextField
                 label="Nama"
@@ -123,27 +165,48 @@ export default function TransactionProductModalAdd({
                 onChange={handleProductFormChange}
               />
             )}
-            <TextField
-              label="Quantity"
-              type="text"
-              name="quantity"
-              value={productForm.quantity}
-              onChange={handleProductFormChange}
-            />
-            <TextField
-              label="Harga Bandrol"
-              type="text"
-              name="priceBeforeDiscount"
-              value={productForm.priceBeforeDiscount}
-              onChange={handleProductFormChange}
-            />
-            <TextField
-              label="Diskon (%)"
-              type="number"
-              name="discountPercent"
-              value={productForm.discountPercent}
-              onChange={handleProductFormChange}
-            />
+            <Stack direction="column" spacing="2" sx={{ width: '100%' }}>
+              <TextField
+                label="Quantity"
+                type="text"
+                name="quantity"
+                value={productForm.quantity}
+                onChange={handleProductFormChange}
+              />
+              {errorMessage.quantity && (
+                <Typography size="12" hexColor={theme.palette.color.danger.default}>
+                  {errorMessage.quantity}
+                </Typography>
+              )}
+            </Stack>
+            <Stack direction="column" spacing="2" sx={{ width: '100%' }}>
+              <TextField
+                label="Harga Bandrol"
+                type="text"
+                name="priceBeforeDiscount"
+                value={productForm.priceBeforeDiscount}
+                onChange={handleProductFormChange}
+              />
+              {errorMessage.priceBeforeDiscount && (
+                <Typography size="12" hexColor={theme.palette.color.danger.default}>
+                  {errorMessage.priceBeforeDiscount}
+                </Typography>
+              )}
+            </Stack>
+            <Stack direction="column" spacing="2" sx={{ width: '100%' }}>
+              <TextField
+                label="Diskon (%)"
+                type="text"
+                name="discountPercent"
+                value={productForm.discountPercent}
+                onChange={handleProductFormChange}
+              />
+              {errorMessage.discountPercent && (
+                <Typography size="12" hexColor={theme.palette.color.danger.default}>
+                  {errorMessage.discountPercent}
+                </Typography>
+              )}
+            </Stack>
             <TextField
               label="Diskon (Rp)"
               type="text"

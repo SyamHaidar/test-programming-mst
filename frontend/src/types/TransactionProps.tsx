@@ -9,18 +9,15 @@ export interface TransactionListProps {
   totalPayment: string
 }
 
-export interface TransactionListResponseProps {
-  id: string
-  code: string
-  date: string
-  customerName: string
-  quantity: string
-  subtotal: string
+export interface TransactionRequestMessageProps {
+  transactionCode: string
+  transactionDate: string
+  custId: string
   discount: string
   shippingPrice: string
-  totalPayment: string
 }
 
+// request
 export interface TransactionRequestProductsProps {
   id: string
   code: string
@@ -45,4 +42,17 @@ export interface TransactionRequestProps {
   shippingPrice: number | string
   subtotal: number | string
   totalPayment: number | string
+}
+
+// response
+export interface TransactionListResponseProps {
+  id: string
+  code: string
+  date: string
+  customerName: string
+  quantity: string
+  subtotal: string
+  discount: string
+  shippingPrice: string
+  totalPayment: string
 }

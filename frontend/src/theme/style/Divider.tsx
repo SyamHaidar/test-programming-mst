@@ -40,9 +40,6 @@ interface DividerProps extends BaseProps {
 
 // ----------------------------------------------------------------------
 
-export default function Divider({
-  orientation = 'horizontal',
-  sx,
-}: DividerProps) {
+export default function Divider({ orientation = 'horizontal', sx }: DividerProps) {
   return <Wrapper $orientation={orientation} $sx={sx} />
 }

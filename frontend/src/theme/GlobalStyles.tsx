@@ -3,8 +3,6 @@ import { font } from './font'
 import { palette } from './palette'
 import { size } from './size'
 
-// import Nexusbold from '../assets/fonts/Nexusbold-Rounded.ttf'
-
 // ----------------------------------------------------------------------
 
 export const theme = {
@@ -14,12 +12,6 @@ export const theme = {
 }
 
 export const GlobalStyles = createGlobalStyle`
- /* @font-face {
-        font-family: 'Nexus bold';
-        src: local('Nexus bold'), local('Nexusbold'),
-        url() format('truetype');
-    } */
-
   *, ::before, ::after {
     box-sizing: border-box;
   }
@@ -125,15 +117,6 @@ export const GlobalStyles = createGlobalStyle`
   ::placeholder {
     color: ${theme.palette.text.secondary};
   }
-
-  /* ::-webkit-scrollbar {
-    height: 6px;
-    width: 6px; 
-  } */
-
-  /* ::-webkit-scrollbar-track {
-    background: transparent;
-  } */
 
   ::-webkit-scrollbar-thumb {
     background-color:  ${theme.palette.scrollbar};

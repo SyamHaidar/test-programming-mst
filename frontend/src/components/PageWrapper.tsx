@@ -10,12 +10,7 @@ interface PageWrapperProps {
   tag?: string
 }
 
-export default function PageWrapper({
-  children,
-  title = '',
-  meta,
-  tag,
-}: PageWrapperProps) {
+export default function PageWrapper({ children, title = '', meta, tag }: PageWrapperProps) {
   return (
     <>
       <Helmet>

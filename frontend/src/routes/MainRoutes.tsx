@@ -11,6 +11,7 @@ const MainRoutes = [
     path: '/',
     element: <MainLayout />,
     children: [
+      // navigate to default route
       { path: '/', element: <Navigate to="/transaction" />, index: true },
       {
         path: 'product',

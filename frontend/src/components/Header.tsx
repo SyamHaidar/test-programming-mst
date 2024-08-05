@@ -3,12 +3,9 @@ import { Box, Container, Stack, theme, Typography } from '../theme'
 
 // ----------------------------------------------------------------------
 
-interface HeaderProps {
-  title?: string
-}
-
-export default function Header({ title }: HeaderProps) {
-  const menuList = [
+export default function Header() {
+  //
+  const headerMenu = [
     { path: '/transaction', name: 'Transaksi' },
     { path: '/customer', name: 'Customer' },
     { path: '/product', name: 'Produk' },
@@ -41,7 +38,7 @@ export default function Header({ title }: HeaderProps) {
           </Stack>
 
           <Stack alignItems="center" sx={{ height: '100%' }}>
-            {menuList.map((data, index) => (
+            {headerMenu.map((data, index) => (
               <Stack
                 key={index}
                 alignItems="center"

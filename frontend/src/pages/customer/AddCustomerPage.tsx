@@ -6,6 +6,7 @@ import { Box, Button, Card, Container, Divider, Stack, TextField, theme, Typogra
 // ----------------------------------------------------------------------
 
 export default function AddProductPage() {
+  // context
   const { handleCustomerForm, createCustomer, customerForm, errorMessage } = useCustomer()
 
   return (

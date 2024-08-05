@@ -25,13 +25,5 @@ interface AvatarProps extends BaseProps {
 // ----------------------------------------------------------------------
 
 export default function Avatar({ src, alt, size, sx, ...other }: AvatarProps) {
-  return (
-    <Wrapper
-      src={src}
-      alt={alt}
-      $size={size && `${size}px`}
-      $sx={sx}
-      {...other}
-    />
-  )
+  return <Wrapper src={src} alt={alt} $size={size && `${size}px`} $sx={sx} {...other} />
 }

@@ -1,13 +1,14 @@
 import { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { PageWrapper, Table } from '../../components'
-import { useProduct } from '../../contexts/ProductContext'
+import { useProduct } from '../../contexts'
 import { Box, Container, Stack, SvgIcon, theme, Typography } from '../../theme'
 import { CurrencyFormat } from '../../utils'
 
 // ----------------------------------------------------------------------
 
 export default function ProductPage() {
+  // context
   const { getAllProduct, productList } = useProduct()
 
   const tableHead = [{ name: 'No' }, { name: 'Kode' }, { name: 'Nama' }, { name: 'Harga' }]

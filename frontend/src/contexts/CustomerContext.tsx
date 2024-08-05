@@ -24,20 +24,17 @@ interface CustomerProviderProps {
 
 export default function CustomerProvider({ children }: CustomerProviderProps) {
   const navigate = useNavigate()
+  // state
   const [customerList, setCustomerList] = useState([])
-  const [customerForm, setCustomerForm] = useState({
-    name: '',
-    phoneNumber: '',
-  })
-  const [errorMessage, setErrorMessage] = useState({
-    name: '',
-    phoneNumber: '',
-  })
+  const [customerForm, setCustomerForm] = useState({ name: '', phoneNumber: '' })
+  const [errorMessage, setErrorMessage] = useState({ name: '', phoneNumber: '' })
 
+  // handle
   const handleCustomerForm = (e: ChangeEvent<HTMLInputElement>) => {
     setCustomerForm({ ...customerForm, [e.target.name]: e.target.value })
   }
 
+  // API
   const getAllCustomer = async () => {
     try {
       const { data } = await CustomerAPI.getAllCustomer()
@@ -65,7 +62,6 @@ export default function CustomerProvider({ children }: CustomerProviderProps) {
       return
     }
 
-    // insert
     try {
       await CustomerAPI.createProduct(customerForm)
       navigate(`/customer`, { replace: true })

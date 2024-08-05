@@ -1,17 +1,12 @@
 # Project
 
-This project is NodeJS with ExpressJS as backend.
+This project using ExpressJS and PostgreSQL for backend.
 
 ## Setup Project
 
 Before run this project please follow the step:
 
-- Create database name same as `DB_DATABASE` in the `.env` file
-- Or you can change the database name from `.env`
+- Create your database and setup the database in `.env` file
 - Run `npm install` in project directory
+- Setup cors from `src/configs/cors.js` to connect API with Frontend
 - Then run `npm run dev` to run project
-
-Tech use:
-
-- ExpressJS
-- PostgreSQL

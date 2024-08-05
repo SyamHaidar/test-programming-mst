@@ -1,10 +1,11 @@
 import { PageWrapper } from '../../components'
-import { useProduct } from '../../contexts/ProductContext'
+import { useProduct } from '../../contexts'
 import { Box, Button, Card, Container, Divider, Stack, TextField, theme, Typography } from '../../theme'
 
 // ----------------------------------------------------------------------
 
 export default function AddProductPage() {
+  // context
   const { handleProductForm, createProduct, productForm, errorMessage } = useProduct()
 
   return (

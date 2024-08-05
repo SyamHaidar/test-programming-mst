@@ -7,15 +7,10 @@ import ModalOverlay from './ModalOverlay'
 
 interface TransactionSelectCustomerModalProps {
   isOpen?: any
-  handleSubmit?: any
-  handleSubmitDisabled?: any
 }
 
-export default function TransactionSelectCustomerModal({
-  isOpen,
-  handleSubmit,
-  handleSubmitDisabled,
-}: TransactionSelectCustomerModalProps) {
+export default function TransactionSelectCustomerModal({ isOpen }: TransactionSelectCustomerModalProps) {
+  // context
   const { getAllCustomer, customerList } = useCustomer()
   const { handleCustomerSelect } = useTransaction()
 
@@ -34,7 +29,7 @@ export default function TransactionSelectCustomerModal({
           {customerList &&
             customerList.map((data, index) => (
               <Stack
-                key={data.id}
+                key={index}
                 direction="column"
                 spacing="2"
                 onClick={() => {

@@ -24,14 +24,17 @@ interface ProductProviderProps {
 
 export default function ProductProvider({ children }: ProductProviderProps) {
   const navigate = useNavigate()
+  // state
   const [productList, setProductList] = useState([])
   const [productForm, setProductForm] = useState({ name: '', price: '' })
   const [errorMessage, setErrorMessage] = useState({ name: '', price: '' })
 
+  // handle
   const handleProductForm = (e: ChangeEvent<HTMLInputElement>) => {
     setProductForm({ ...productForm, [e.target.name]: e.target.value })
   }
 
+  // API
   const getAllProduct = async () => {
     try {
       const { data } = await ProductAPI.getAllProduct()

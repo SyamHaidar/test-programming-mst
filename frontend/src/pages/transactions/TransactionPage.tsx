@@ -8,6 +8,7 @@ import { CurrencyFormat } from '../../utils'
 // ----------------------------------------------------------------------
 
 export default function TransactionPage() {
+  // context
   const { getAllTransaction, transactionList } = useTransaction()
 
   const tableHead = [

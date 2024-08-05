@@ -7,6 +7,7 @@ import { Box, Container, Stack, SvgIcon, theme, Typography } from '../../theme'
 // ----------------------------------------------------------------------
 
 export default function CustomerPage() {
+  // context
   const { getAllCustomer, customerList } = useCustomer()
 
   const tableHead = [{ name: 'No' }, { name: 'Kode' }, { name: 'Nama' }, { name: 'No Telp' }]
